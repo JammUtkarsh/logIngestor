@@ -5,9 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/elastic"
-	"github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/elastic/ingestion"
 	"github.com/gin-gonic/gin"
+	"github.com/jammutkarsh/elasticlogs/core/elastic"
+	"github.com/jammutkarsh/elasticlogs/core/elastic/ingestion"
 	"github.com/spf13/cobra"
 )
 

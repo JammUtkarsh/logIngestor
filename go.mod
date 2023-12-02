@@ -1,4 +1,4 @@
-module github.com/dyte-submissions/november-2023-hiring-JammUtkarsh
+module github.com/jammutkarsh/elasticlogs
 
 go 1.20
 

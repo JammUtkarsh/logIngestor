@@ -29,11 +29,11 @@ type TimeRange struct {
 }
 
 const (
-	URL   = "http://localhost:9200/"
 	Index = "dyte-sde/"
 )
 
 var (
+	URL string   =  os.Getenv("ELASTIC_URL")
 	Username string = os.Getenv("ELASTIC_USERNAME")
 	Password string = os.Getenv("ELASTIC_PASSWORD")
 )
@@ -56,6 +56,8 @@ func Ping() error {
 	return nil
 }
 
+// The function `IsValidTimeRange` checks if a given timestamp string represents a valid time range and
+// returns the formatted timestamps if valid.
 func IsValidTimeRange(timestamp string) (string, string, error) {
 	arr := strings.Split(timestamp, " ")
 	if len(arr) != 2 {
@@ -76,30 +78,31 @@ func IsValidTimeRange(timestamp string) (string, string, error) {
 	return ts0.Format(time.RFC3339), ts0.Format(time.RFC3339), nil
 }
 
-func CleanOutput(level, message, resourceID, traceID, spanID, commit, parentResourceID, timestamp string, m *[]DataModel) {
+// The CleanOutput function removes the fields whose flags are not set in the CLI.
+func CleanOutput(flag DataModel, timestamp string, m *[]DataModel) {
 	for i := range *m {
-		if level == "" {
+		if flag.Level != "" {
 			(*m)[i].Level = ""
 		}
-		if message == "" {
+		if flag.Message != "" {
 			(*m)[i].Message = ""
 		}
-		if resourceID == "" {
+		if flag.ResourceId != "" {
 			(*m)[i].ResourceId = ""
 		}
-		if traceID == "" {
+		if flag.TraceId != "" {
 			(*m)[i].TraceId = ""
 		}
-		if spanID == "" {
+		if flag.SpanId != "" {
 			(*m)[i].SpanId = ""
 		}
-		if commit == "" {
+		if flag.Commit != "" {
 			(*m)[i].Commit = ""
 		}
-		if parentResourceID == "" {
+		if flag.Metadata.ParentResourceId != "" {
 			(*m)[i].Metadata.ParentResourceId = ""
 		}
-		if timestamp == "" {
+		if timestamp != "" {
 			(*m)[i].Timestamp = time.Time{}
 		}
 	}

@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/elastic"
-	"github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/elastic/query"
+	"github.com/jammutkarsh/elasticlogs/core/elastic"
+	"github.com/jammutkarsh/elasticlogs/core/elastic/query"
 	"github.com/spf13/cobra"
 )
 
@@ -17,24 +17,24 @@ func Query(cmd *cobra.Command, args []string) {
 		fmt.Printf("accepts min 2 and max 9 arg(s), received %d\n", cmd.Flags().NFlag())
 		os.Exit(1)
 	}
-
+	var cmdFlags elastic.DataModel
 	all, _ := cmd.Flags().GetBool("all")
-	level, _ := cmd.Flags().GetString("level")
-	message, _ := cmd.Flags().GetString("message")
-	resourceID, _ := cmd.Flags().GetString("resource")
-	traceID, _ := cmd.Flags().GetString("trace")
+	cmdFlags.Level, _ = cmd.Flags().GetString("level")
+	cmdFlags.Message, _ = cmd.Flags().GetString("message")
+	cmdFlags.ResourceId, _ = cmd.Flags().GetString("resource")
+	cmdFlags.TraceId, _ = cmd.Flags().GetString("trace")
+	cmdFlags.SpanId, _ = cmd.Flags().GetString("span")
+	cmdFlags.Commit, _ = cmd.Flags().GetString("commit")
+	cmdFlags.Metadata.ParentResourceId, _ = cmd.Flags().GetString("parentresource")
 	timestamp, _ := cmd.Flags().GetString("time")
-	spanID, _ := cmd.Flags().GetString("span")
-	commit, _ := cmd.Flags().GetString("commit")
-	parentResourceID, _ := cmd.Flags().GetString("parentresource")
 
-	m, err := query.ElasticSearch(level, message, resourceID, traceID, spanID, commit, parentResourceID, timestamp)
+	m, err := query.ElasticSearch(cmdFlags, timestamp)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 	if !all {
-		elastic.CleanOutput(level, message, resourceID, traceID, spanID, commit, parentResourceID, timestamp, &m)
+		elastic.CleanOutput(cmdFlags, timestamp, &m)
 	}
 	fmt.Println(printLogs(m, all))
 }

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	cli "github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/CLI"
+	cli "github.com/jammutkarsh/elasticlogs/core/CLI"
 	"github.com/spf13/cobra"
 )
 

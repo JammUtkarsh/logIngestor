@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/elastic"
 	"github.com/gin-gonic/gin"
+	"github.com/jammutkarsh/elasticlogs/core/elastic"
 )
 
 func IngestionData(ctx *gin.Context) {

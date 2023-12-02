@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dyte-submissions/november-2023-hiring-JammUtkarsh/core/elastic"
+	"github.com/jammutkarsh/elasticlogs/core/elastic"
 	"github.com/maximelamure/elasticsearch"
 )
 
@@ -24,8 +24,8 @@ Flags | Text
 0       |    1            -> some text
 1	     |    0            -> level:abcd
 */
-func ElasticSearch(level, message, resourceID, traceID, spanID, commit, parentResourceID, timestamp string) ([]elastic.DataModel, error) {
-	query := BuildSearchQuery(level, message, resourceID, traceID, timestamp, spanID, commit, parentResourceID)
+func ElasticSearch(flags elastic.DataModel, timestamp string) ([]elastic.DataModel, error) {
+	query := BuildSearchQuery(flags, timestamp)
 	var response elasticsearch.SearchResult
 
 	req, err := http.NewRequest(http.MethodPost, elastic.URL+elastic.Index+"_search?pretty=true", strings.NewReader(query))
@@ -63,28 +63,28 @@ func ElasticSearch(level, message, resourceID, traceID, spanID, commit, parentRe
 	return data, nil
 }
 
-func BuildSearchQuery(level, message, resourceID, traceID, spanID, commit, parentResourceID, timestamp string) string {
+func BuildSearchQuery(flag elastic.DataModel, timestamp string) string {
 	queryParts := make([]string, 0)
-	if level != "" {
-		queryParts = append(queryParts, SearchByLevelQuery(level))
+	if flag.Level != "" {
+		queryParts = append(queryParts, SearchByLevelQuery(flag.Level))
 	}
-	if message != "" {
-		queryParts = append(queryParts, SearchByMessageQuery(message))
+	if flag.Message != "" {
+		queryParts = append(queryParts, SearchByMessageQuery(flag.Message))
 	}
-	if resourceID != "" {
-		queryParts = append(queryParts, SearchByResourceIDQuery(resourceID))
+	if flag.ResourceId != "" {
+		queryParts = append(queryParts, SearchByResourceIDQuery(flag.ResourceId))
 	}
-	if traceID != "" {
-		queryParts = append(queryParts, SearchByTraceIDQuery(traceID))
+	if flag.TraceId != "" {
+		queryParts = append(queryParts, SearchByTraceIDQuery(flag.TraceId))
 	}
-	if spanID != "" {
-		queryParts = append(queryParts, SearchBySpanIDQuery(spanID))
+	if flag.SpanId != "" {
+		queryParts = append(queryParts, SearchBySpanIDQuery(flag.SpanId))
 	}
-	if commit != "" {
-		queryParts = append(queryParts, SearchByCommitQuery(commit))
+	if flag.Commit != "" {
+		queryParts = append(queryParts, SearchByCommitQuery(flag.Commit))
 	}
-	if parentResourceID != "" {
-		queryParts = append(queryParts, SearchByParentResourceIDQuery(parentResourceID))
+	if flag.Metadata.ParentResourceId != "" {
+		queryParts = append(queryParts, SearchByParentResourceIDQuery(flag.Metadata.ParentResourceId))
 	}
 	if timestamp != "" {
 		queryParts = append(queryParts, SearchByTimestampRangeQuery(timestamp))
