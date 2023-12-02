@@ -8,14 +8,11 @@ import (
 	"os"
 )
 
-const (
-	Index = "dyte-sde/"
-)
-
 var (
 	URL      string = os.Getenv("ELASTIC_URL")
 	username string = os.Getenv("ELASTIC_USERNAME")
 	password string = os.Getenv("ELASTIC_PASSWORD")
+	Index string = os.Getenv("ELASTIC_INDEX")
 )
 
 func init() {

@@ -9,12 +9,11 @@ import (
 	"strings"
 
 	"github.com/jammutkarsh/elasticlogs/core/elastic"
-	"github.com/maximelamure/elasticsearch"
 )
 
 func ElasticSearch(flags elastic.DataModel, timestamp string) ([]elastic.DataModel, error) {
 	query := BuildSearchQuery(flags, timestamp)
-	var response elasticsearch.SearchResult
+	var response elastic.SearchResult
 
 	req, err := http.NewRequest(http.MethodPost, elastic.URL+elastic.Index+"_search?pretty=true", strings.NewReader(query))
 	if err != nil {

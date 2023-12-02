@@ -85,8 +85,6 @@ github.com/looplab/logspout-logstash v0.0.0-20200721102059-f6992c03834b h1:T4ZUV
 github.com/looplab/logspout-logstash v0.0.0-20200721102059-f6992c03834b/go.mod h1:JGtIU22PbW89UiPrH/M1qcGZ9WkWlibloyUHGQ3Tgok=
 github.com/mattn/go-isatty v0.0.19 h1:JITubQf0MOLdlGRuRq+jtsDlekdYPia9ZFsB8h/APPA=
 github.com/mattn/go-isatty v0.0.19/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
-github.com/maximelamure/elasticsearch v1.0.4 h1:BLvaC06kgAsGkAy8dp13wA5thpw1V8nP+Ms2j5Yj4tE=
-github.com/maximelamure/elasticsearch v1.0.4/go.mod h1:6Y4nOABqEwUWrmDS6JQglVFW3jPx7Usip5iCIptvGMs=
 github.com/moby/patternmatcher v0.6.0 h1:GmP9lR19aU5GqSSFko+5pRqHi+Ohk1O69aFiKkVGiPk=
 github.com/moby/patternmatcher v0.6.0/go.mod h1:hDPoyOpDY7OrrMDLaYoY3hf52gNCR/YOUYxkhApJIxc=
 github.com/moby/sys/mountinfo v0.5.0/go.mod h1:3bMD3Rg+zkqx8MRYPi7Pyb0Ie97QEBmdxbhnCLlSvSU=

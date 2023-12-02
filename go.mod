@@ -6,7 +6,6 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gliderlabs/logspout v3.2.6+incompatible
 	github.com/looplab/logspout-logstash v0.0.0-20200721102059-f6992c03834b
-	github.com/maximelamure/elasticsearch v1.0.4
 	github.com/spf13/cobra v1.8.0
 )
 

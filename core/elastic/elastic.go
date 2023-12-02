@@ -1,6 +1,7 @@
 package elastic
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"os"
@@ -23,19 +24,48 @@ type Metadata struct {
 	ParentResourceId string `json:"parentResourceId"`
 }
 
+type SearchResult struct {
+	Took     uint64 `json:"took"`
+	TimedOut bool   `json:"timed_out"`
+	Shards   struct {
+		Total      int `json:"total"`
+		Successful int `json:"successful"`
+		Skipped    int `json:"skipped"`
+		Failed     int `json:"failed"`
+	} `json:"_shards"`
+	Hits         ResultHits      `json:"hits"`
+	Aggregations json.RawMessage `json:"aggregations"`
+}
+
+type ResultHits struct {
+	Total struct {
+		Value    int    `json:"value"`
+		Relation string `json:"relation"`
+	} `json:"total"`
+	MaxScore float32 `json:"max_score"`
+	Hits     []Hit   `json:"hits"`
+}
+
+type Hit struct {
+	Index     string              `json:"_index"`
+	Type      string              `json:"_type"`
+	ID        string              `json:"_id"`
+	Score     float32             `json:"_score"`
+	Source    json.RawMessage     `json:"_source"`
+	Highlight map[string][]string `json:"highlight,omitempty"`
+}
+
+
 type TimeRange struct {
 	From string
 	To   string
 }
 
-const (
-	Index = "dyte-sde/"
-)
-
 var (
 	URL      string = os.Getenv("ELASTIC_URL")
 	Username string = os.Getenv("ELASTIC_USERNAME")
 	Password string = os.Getenv("ELASTIC_PASSWORD")
+	Index string = os.Getenv("ELASTIC_INDEX")
 )
 
 func Ping() error {
