@@ -3,7 +3,6 @@ package elastic
 import (
 	"reflect"
 	"testing"
-	"time"
 )
 
 func TestIsValidTimeRange(t *testing.T) {
@@ -58,20 +57,31 @@ func TestIsValidTimeRange(t *testing.T) {
 }
 
 func TestCleanOutput(t *testing.T) {
-	apiData := []DataModel{
+	// APIData is a sample data for testing that will be sent by elasticsearch
+	APIData := []DataModel{
 		{
 			Level:      "error",
-			Message:    "failed",
-			ResourceId: "123",
-			Timestamp:  time.Now(),
-			TraceId:    "trace123",
-			SpanId:     "span456",
-			Commit:     "commit789",
+			Message:    "Failed to authenticate user",
+			ResourceId: "server-9876",
+			TraceId:    "jkl-mno-345",
+			SpanId:     "span-678",
+			Commit:     "9i8u7y6",
 			Metadata: Metadata{
-				ParentResourceId: "parent123",
+				ParentResourceId: "server-5432",
 			},
 		},
-		// Add more test cases for other scenarios
+		{
+			Level:      "error",
+			Message:    "Failed to connect to DB",
+			ResourceId: "server-1234",
+			TraceId:    "abc-xyz-123",
+			SpanId:     "span-456",
+			Commit:     "5e5342f",
+			Metadata: Metadata{
+				ParentResourceId: "server-0987",
+			},
+		},
+		// Add more test cases
 	}
 
 	// Define test cases
@@ -87,29 +97,28 @@ func TestCleanOutput(t *testing.T) {
 				Level:   "error",
 				Message: "failed",
 			},
-			timestamp: "",
 			expectedResult: []DataModel{
 				{
-					Level:      "error",
-					Message:    "failed",
-					ResourceId: "",
-					Timestamp:  time.Time{},
-					TraceId:    "",
-					SpanId:     "",
-					Commit:     "",
-					Metadata:   Metadata{},
+					Level:   "error",
+					Message: "Failed to authenticate user",
+				},
+				{
+					Level:   "error",
+					Message: "Failed to connect to DB",
 				},
 			},
 		},
-		// Add more test cases for other scenarios
+		// Add more expected cases
 	}
 
 	// Run test cases
 	for _, tc := range testCases {
 		t.Run(tc.testName, func(t *testing.T) {
-			CleanOutput(tc.flag, tc.timestamp, &apiData)
-			if !reflect.DeepEqual(apiData, tc.expectedResult) {
-				t.Errorf("Test %s:\nExpected\n%v, got\n%v", tc.testName, tc.expectedResult, apiData)
+			testData := make([]DataModel, len(APIData))
+			copy(testData, APIData) // Copy APIData to testData
+			CleanOutput(tc.flag, tc.timestamp, &testData)
+			if !reflect.DeepEqual(testData, tc.expectedResult) {
+				t.Errorf("Test %s:\nExpected\n%v, got\n%v", tc.testName, tc.expectedResult, testData)
 			}
 		})
 	}
