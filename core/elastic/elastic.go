@@ -81,28 +81,28 @@ func IsValidTimeRange(timestamp string) (string, string, error) {
 // The CleanOutput function removes the fields whose flags are not set in the CLI.
 func CleanOutput(flag DataModel, timestamp string, m *[]DataModel) {
 	for i := range *m {
-		if flag.Level != "" {
+		if flag.Level == "" {
 			(*m)[i].Level = ""
 		}
-		if flag.Message != "" {
+		if flag.Message == "" {
 			(*m)[i].Message = ""
 		}
-		if flag.ResourceId != "" {
+		if flag.ResourceId == "" {
 			(*m)[i].ResourceId = ""
 		}
-		if flag.TraceId != "" {
+		if flag.TraceId == "" {
 			(*m)[i].TraceId = ""
 		}
-		if flag.SpanId != "" {
+		if flag.SpanId == "" {
 			(*m)[i].SpanId = ""
 		}
-		if flag.Commit != "" {
+		if flag.Commit == "" {
 			(*m)[i].Commit = ""
 		}
-		if flag.Metadata.ParentResourceId != "" {
+		if flag.Metadata.ParentResourceId == "" {
 			(*m)[i].Metadata.ParentResourceId = ""
 		}
-		if timestamp != "" {
+		if timestamp == "" {
 			(*m)[i].Timestamp = time.Time{}
 		}
 	}

@@ -1,7 +1,9 @@
 package elastic
 
 import (
+	"reflect"
 	"testing"
+	"time"
 )
 
 func TestIsValidTimeRange(t *testing.T) {
@@ -52,5 +54,63 @@ func TestIsValidTimeRange(t *testing.T) {
 			t.Errorf("expected error to be %t, got %t", testCase.expectedError, err != nil)
 		}
 
+	}
+}
+
+func TestCleanOutput(t *testing.T) {
+	apiData := []DataModel{
+		{
+			Level:      "error",
+			Message:    "failed",
+			ResourceId: "123",
+			Timestamp:  time.Now(),
+			TraceId:    "trace123",
+			SpanId:     "span456",
+			Commit:     "commit789",
+			Metadata: Metadata{
+				ParentResourceId: "parent123",
+			},
+		},
+		// Add more test cases for other scenarios
+	}
+
+	// Define test cases
+	testCases := []struct {
+		testName       string
+		flag           DataModel
+		timestamp      string
+		expectedResult []DataModel
+	}{
+		{
+			testName: "Two flags are set",
+			flag: DataModel{
+				Level:   "error",
+				Message: "failed",
+			},
+			timestamp: "",
+			expectedResult: []DataModel{
+				{
+					Level:      "error",
+					Message:    "failed",
+					ResourceId: "",
+					Timestamp:  time.Time{},
+					TraceId:    "",
+					SpanId:     "",
+					Commit:     "",
+					Metadata:   Metadata{},
+				},
+			},
+		},
+		// Add more test cases for other scenarios
+	}
+
+	// Run test cases
+	for _, tc := range testCases {
+		t.Run(tc.testName, func(t *testing.T) {
+			CleanOutput(tc.flag, tc.timestamp, &apiData)
+			if !reflect.DeepEqual(apiData, tc.expectedResult) {
+				t.Errorf("Test %s:\nExpected\n%v, got\n%v", tc.testName, tc.expectedResult, apiData)
+			}
+		})
 	}
 }
