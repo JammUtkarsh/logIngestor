@@ -1,5 +1,7 @@
 # Logs(log search)
 
+> Was a hackathon build. No longer maintained
+
 Original [Project Requirement Document](TASK.md)
 
 In this project, I build a CLI tool with two sub-commands.
@@ -28,7 +30,7 @@ git submodule init
 git submodule update
 
 # Setting up containers
-cd docker-elk
+cd elastic
 docker compose up setup
 docker compose up elasticsearch -d
 cd ..
