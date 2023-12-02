@@ -1,0 +1,6 @@
+[submodule "docker-elk"]
+	path = docker-elk
+	url = https://github.com/JammUtkarsh/docker-elk
+[submodule "elastic"]
+	path = elastic
+	url = https://github.com/JammUtkarsh/docker-elk/
