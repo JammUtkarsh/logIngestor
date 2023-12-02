@@ -33,6 +33,10 @@ func Query(cmd *cobra.Command, args []string) {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	if len(m) == 0 {
+		fmt.Println("No results found")
+		os.Exit(0)
+	}
 	if !all {
 		elastic.CleanOutput(cmdFlags, timestamp, &m)
 	}
@@ -40,35 +44,35 @@ func Query(cmd *cobra.Command, args []string) {
 }
 
 func printLogs(m []elastic.DataModel, all bool) string {
-    out := "Performing query with the following options:\n\n"
+	out := "Performing query with the following options:\n\n"
 
-    for _, v := range m {
-        if v.Level != "" || all {
-            out += fmt.Sprintf("Level: %s\n", v.Level)
-        }
-        if v.Timestamp != (time.Time{}) || all {
-            out += fmt.Sprintf("Timestamp: %s\n", v.Timestamp.Format(time.RFC3339))
-        }
-        if v.Message != "" || all {
-            out += fmt.Sprintf("Message: %s\n", v.Message)
-        }
-        if v.ResourceId != "" || all {
-            out += fmt.Sprintf("Resource ID: %s\n", v.ResourceId)
-        }
-        if v.TraceId != "" || all {
-            out += fmt.Sprintf("Trace ID: %s\n", v.TraceId)
-        }
-        if v.SpanId != "" || all {
-            out += fmt.Sprintf("Span ID: %s\n", v.SpanId)
-        }
-        if v.Commit != "" || all {
-            out += fmt.Sprintf("Commit: %s\n", v.Commit)
-        }
-        if v.Metadata.ParentResourceId != "" || all {
-            out += fmt.Sprintf("Parent Resource ID: %s\n", v.Metadata.ParentResourceId)
-        }
-        out += "----------------------------------------\n"
-    }
+	for _, v := range m {
+		if v.Level != "" || all {
+			out += fmt.Sprintf("Level: %s\n", v.Level)
+		}
+		if v.Timestamp != (time.Time{}) || all {
+			out += fmt.Sprintf("Timestamp: %s\n", v.Timestamp.Format(time.RFC3339))
+		}
+		if v.Message != "" || all {
+			out += fmt.Sprintf("Message: %s\n", v.Message)
+		}
+		if v.ResourceId != "" || all {
+			out += fmt.Sprintf("Resource ID: %s\n", v.ResourceId)
+		}
+		if v.TraceId != "" || all {
+			out += fmt.Sprintf("Trace ID: %s\n", v.TraceId)
+		}
+		if v.SpanId != "" || all {
+			out += fmt.Sprintf("Span ID: %s\n", v.SpanId)
+		}
+		if v.Commit != "" || all {
+			out += fmt.Sprintf("Commit: %s\n", v.Commit)
+		}
+		if v.Metadata.ParentResourceId != "" || all {
+			out += fmt.Sprintf("Parent Resource ID: %s\n", v.Metadata.ParentResourceId)
+		}
+		out += "----------------------------------------\n"
+	}
 
-    return out
+	return out
 }

@@ -5,6 +5,7 @@ import (
 	"os"
 
 	cli "github.com/jammutkarsh/elasticlogs/core/CLI"
+	"github.com/jammutkarsh/elasticlogs/core/elastic"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +27,13 @@ logs query [flags]`,
 	serveCmd := &cobra.Command{
 		Use:   "serve",
 		Short: "Start the server at port 3000",
-		Run:   cli.Serve,
+		PreRun: func(cmd *cobra.Command, args []string) {
+			if err := elastic.Ping(); err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+		},
+		Run: cli.Serve,
 	}
 	rootCmd.AddCommand(serveCmd)
 
@@ -37,6 +44,12 @@ logs query [flags]`,
 logs query --level=info --message "some message"
 logs query --level=error --time "2021-10-10T10:10:10Z 2023-11-10T10:10:10Z"
 logs query --level=error --message="Failed" --time="2021-10-10T10:10:10Z 2022-11-10T10:10:10Z" --all`,
+		PreRun: func(cmd *cobra.Command, args []string) {
+			if err := elastic.Ping(); err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+		},
 		Run: cli.Query,
 	}
 	queryCmd.Flags().String("level", "", "Filter by level")

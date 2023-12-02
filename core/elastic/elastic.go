@@ -33,12 +33,15 @@ const (
 )
 
 var (
-	URL string   =  os.Getenv("ELASTIC_URL")
+	URL      string = os.Getenv("ELASTIC_URL")
 	Username string = os.Getenv("ELASTIC_USERNAME")
 	Password string = os.Getenv("ELASTIC_PASSWORD")
 )
 
 func Ping() error {
+	if Username == "" || Password == "" {
+		return fmt.Errorf("ELASTIC_USERNAME or ELASTIC_PASSWORD not set")
+	}
 	req, err := http.NewRequest(http.MethodGet, URL, nil)
 	if err != nil {
 		return err

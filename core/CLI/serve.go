@@ -12,11 +12,8 @@ import (
 )
 
 func Serve(cmd *cobra.Command, args []string) {
-	if elastic.Username == "" || elastic.Password == "" {
-		panic("ELASTIC_USERNAME or ELASTIC_PASSWORD not set")
-	}
 	if err := elastic.Ping(); err != nil {
-		fmt.Println("Elasticsearch is not running")
+		fmt.Println(err)
 		os.Exit(1)
 	}
 	gin.SetMode(gin.ReleaseMode)

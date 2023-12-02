@@ -12,18 +12,6 @@ import (
 	"github.com/maximelamure/elasticsearch"
 )
 
-/*
-CLI Perspective:
-Flags based system. If true then inclue that query.
-sde query "some text" # return all the document with "some text"
-sde query --level "abcd" "some text" # return all the document with level "abcd" and "some text" | whole document
-sde query --level "abcd" # return all the document with level "abcd" | whole document
-sde query --only --level "abcd" --commit "efas12"  # return all the document with level "abcd" | only commit and level
-
-Flags | Text
-0       |    1            -> some text
-1	     |    0            -> level:abcd
-*/
 func ElasticSearch(flags elastic.DataModel, timestamp string) ([]elastic.DataModel, error) {
 	query := BuildSearchQuery(flags, timestamp)
 	var response elasticsearch.SearchResult

@@ -13,11 +13,10 @@ const (
 )
 
 var (
-	URL string   =  os.Getenv("ELASTIC_URL")
+	URL      string = os.Getenv("ELASTIC_URL")
 	username string = os.Getenv("ELASTIC_USERNAME")
 	password string = os.Getenv("ELASTIC_PASSWORD")
 )
-
 
 func init() {
 	if username == "" || password == "" {
